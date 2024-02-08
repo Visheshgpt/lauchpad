@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      CLOUD_MONGO_STRING: "GK"
+      CLOUD_MONGO_STRING: ${{ secrets.CLOUD_MONGO_STRING }}
 
     steps:
     - name: Checkout Repository
