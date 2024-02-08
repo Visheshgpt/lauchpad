@@ -31,7 +31,7 @@ jobs:
       run: echo ${{ vars.PORT }}
    
     - name: Check secrets
-      run: echo "${{ env.MONGO_URL }}""
+      run: echo "${{ env.MONGO_URL }}"
 
     - name: Install Dependencies
       run: npm install
