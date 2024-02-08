@@ -6,7 +6,7 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const rateLimit = require("express-rate-limit");
 const router = require("./route");
-// const db = require("./connections/dbMaster");
+const db = require("./connections/dbMaster");
 const config = require("./config/config");
 const logger = require("./helpers/logger");
  
@@ -53,8 +53,7 @@ const limiter = rateLimit({
 //   }
 // };
 
-// adding morgan to log HTTP requests
-// app.use(morgan("combined"));
+
 app.use("/api", limiter);
 // app.use(checkOrigin);
 
