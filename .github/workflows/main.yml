@@ -17,6 +17,7 @@ jobs:
 
     env:
       CLOUD_MONGO_STRING: ${{ secrets.CLOUD_MONGO_STRING }}
+      ABC: ${{ secrets.ABC }}
 
     steps:
     - name: Checkout Repository
