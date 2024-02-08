@@ -25,10 +25,10 @@ jobs:
         node-version: 18
     
     - name: Check env Variables
-      run: echo "${{ vars.PORT }}""    
+      run: echo "${{ vars.PORT }}"
    
     - name: Check secrets
-      run: echo "${{ secrets.CLOUD_MONGO_STRING }}""      
+      run: echo "${{ secrets.CLOUD_MONGO_STRING }}"
 
     - name: Install Dependencies
       run: npm install
