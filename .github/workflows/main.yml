@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      MONGO_URL: "GK"
+      CLOUD_MONGO_STRING: "GK"
 
     steps:
     - name: Checkout Repository
@@ -27,11 +27,8 @@ jobs:
       with:
         node-version: 18
     
-    - name: Check env Variables
-      run: echo ${{ vars.PORT }}
-   
     - name: Check secrets
-      run: echo "${{ env.MONGO_URL }}"
+      run: echo ${{ env.CLOUD_MONGO_STRING }}
 
     - name: Install Dependencies
       run: npm install
