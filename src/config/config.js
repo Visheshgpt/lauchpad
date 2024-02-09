@@ -20,6 +20,12 @@ module.exports = {
 		},
 	},
 
+	jwt: {
+		secret: process.env.JWT_SECRET,
+		expirationTime: process.env.JWT_EXPIRES_IN,
+		cookieExpirationTime: process.env.JWT_COOKIE_EXPIRES_IN
+	}
+
 	// ETHEREUM_WS_URL: process.env.ETHEREUM_WS_URL,
 	// ETHEREUM_RPC_URL: process.env.ETHEREUM_RPC_URL,
 	// BSC_WS_URL: process.env.BSC_WS_URL,

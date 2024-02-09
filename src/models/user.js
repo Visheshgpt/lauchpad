@@ -1,4 +1,7 @@
 const mongoose = require("mongoose");
+const db = require("../connections/dbMaster");
+var jwt = require("jsonwebtoken");
+const config = require("../config/config");
 const { ObjectId } = mongoose.Schema;
 
 const userSchema = new mongoose.Schema(
@@ -27,6 +30,18 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+userSchema.methods.getJwtToken = function () {
+  return jwt.sign({ id: this._id }, config.jwt.secret, {
+    expiresIn: config.jwt.expirationTime,
+  });
+};
+
+// userSchema.methods.getJwtToken = () => {
+//   return jwt.sign({ id: "hello" }, "secret", {
+//     expiresIn: 24 * 60 * 60 * 1000
+//   } )
+// }
 
 const User = db.model("User", userSchema);
 

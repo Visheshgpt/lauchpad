@@ -5,8 +5,8 @@ const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const rateLimit = require("express-rate-limit");
-const router = require("./route");
-const db = require("./connections/dbMaster");
+const router = require("./routes");
+// const db = require("./connections/dbMaster");
 const config = require("./config/config");
 const logger = require("./helpers/logger");
  

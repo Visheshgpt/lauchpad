@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const db = require("../connections/dbMaster");
 const { ObjectId } = mongoose.Schema;
 
 const AccountSchema = new mongoose.Schema(
