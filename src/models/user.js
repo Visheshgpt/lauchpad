@@ -8,11 +8,9 @@ const userSchema = new mongoose.Schema(
   {
     profileId: {
       type: String,
-      unique: true,
     },
     email: {
       type: String,
-      unique: true,
     },
     profilePicture: {
       type: String,

@@ -28,6 +28,10 @@ const AccountSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    creationDate: {
+      type: Number,
+      default: parseInt(Date.now() / 1000),
+    },
     eligibleForGiftCard: {
       type: Boolean,
       default: true,

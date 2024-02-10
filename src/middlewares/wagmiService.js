@@ -1,6 +1,6 @@
 const { SiweMessage } = require("siwe");
 
-const verifySignature = async (req, res, next) => {
+module.exports.verifySignature = async (req, res, next) => {
   const { message, signature } = req.body;
 
   try {
@@ -27,8 +27,4 @@ const verifySignature = async (req, res, next) => {
       msg: error?.message,
     });
   }
-};
-
-module.exports = {
-  verifySignature,
 };
