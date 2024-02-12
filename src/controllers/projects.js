@@ -1,9 +1,9 @@
-const Token = require("../models/token");
+const Project = require("../models/project");
 const { handleError, handleResponse } = require("../helpers/responseHandler");
 
-const getAllTokens = async (req, res) => {
+const getAllProjects = async (req, res) => {
   try {
-    const data = await Token.find();
+    const data = await Project.find().populate("token");
     handleResponse({ res, data });
   } catch (error) {
     handleError({
@@ -13,15 +13,15 @@ const getAllTokens = async (req, res) => {
   }
 };
 
-const getToken = async (req, res) => {
+const getProjectByName = async (req, res) => {
   try {
-    const _id = req.params.tokenId;
-    const data = await Token.findById({ _id });
+    const projectTitle = req.params.projectName;
+    const data = await Project.findOne({ projectTitle }).populate("token");
     if (!data) {
       handleError({
         res,
         statusCode: 404,
-        err_msg: "No Token found",
+        err_msg: "No project found",
       });
       return;
     }
@@ -34,19 +34,20 @@ const getToken = async (req, res) => {
   }
 };
 
-const updateTokenDetails = async (req, res) => {
+const updateProjectDetails = async (req, res) => {
   try {
-    const _id = req.params.tokenId;
-    const data = await Token.findOneAndUpdate(
-      { _id },
+    const projectTitle = req.params.projectName;
+    const data = await Project.findOneAndUpdate(
+      { projectTitle },
       { $set: req.body },
       { new: true }
     );
+
     if (!data) {
       handleError({
         res,
         statusCode: 404,
-        err_msg: "No Token found",
+        err_msg: "No project found",
       });
       return;
     }
@@ -60,7 +61,7 @@ const updateTokenDetails = async (req, res) => {
 };
 
 module.exports = {
-  getAllTokens,
-  getToken,
-  updateTokenDetails,
+  getAllProjects,
+  getProjectByName,
+  updateProjectDetails,
 };

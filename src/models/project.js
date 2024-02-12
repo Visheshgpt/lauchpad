@@ -51,7 +51,7 @@ const projectSchema = new mongoose.Schema(
       default: parseInt(Date.now() / 1000),
     },
     team: {
-      leadVC: {
+      leadVc: {
         type: String,
       },
       marketMaker: {
