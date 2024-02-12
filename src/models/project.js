@@ -1,14 +1,18 @@
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema;
+const db = require("../connections/dbMaster");
+
 
 const projectSchema = new mongoose.Schema(
   {
     token: {
       type: ObjectId,
       ref: "Token",
+      required: true
     },
-    name: {
+    projectTitle: {
       type: String,
+      unique: true
     },
     telegramId: {
       type: String,
@@ -21,6 +25,7 @@ const projectSchema = new mongoose.Schema(
     },
     chainId: {
       type: Number,
+      default: 1,
     },
     overview: {
       type: Array,
@@ -42,7 +47,8 @@ const projectSchema = new mongoose.Schema(
       default: [],
     },
     creationDate: {
-      type: String,
+      type: Number,
+      default: parseInt(Date.now() / 1000),
     },
     team: {
       leadVC: {
@@ -67,7 +73,8 @@ const projectSchema = new mongoose.Schema(
       type: String,
     },
     projectTags: {
-        type: String,
+        type: Array,
+        default: []
     },
     routeName: {
         type: String,

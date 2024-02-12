@@ -13,8 +13,8 @@ db.on('connected', () => {
 })
 
 // If the connection throws an error
-db.on('error', (err) => {
-	logger.debug(`Mongoose connection error for master DB: ${err}`)
+db.on('error', (error) => {
+	logger.debug(`Mongoose connection error for master DB: ${error}`)
 })
 
 // When the connection is disconnected

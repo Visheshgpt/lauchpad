@@ -1,11 +1,12 @@
-const { isLoggedIn } =  require('./auth')
-const { fetchPrice } = require('./priceHelper')
-const { verifySignature } = require('./wagmiService')
-
-
+const { isLoggedIn, isAdmin } = require("./auth");
+const { fetchPrice } = require("./priceHelper");
+const { saleInputValidation } = require("./saleValidation");
+const { verifySignature } = require("./wagmiService");
 
 module.exports = {
-    isLoggedIn,
-    verifySignature,
-    fetchPrice
-}
+  isLoggedIn,
+  isAdmin,
+  verifySignature,
+  fetchPrice,
+  saleInputValidation,
+};

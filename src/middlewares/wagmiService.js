@@ -5,7 +5,7 @@ module.exports.verifySignature = async (req, res, next) => {
 
   try {
     if (!message || !signature) {
-      return res.status(401).send({
+      return res.status(500).send({
         msg: "data missing",
       });
     }
@@ -19,11 +19,11 @@ module.exports.verifySignature = async (req, res, next) => {
       return;
     }
 
-    return res.status(401).send({
+    return res.status(500).send({
       msg: "invalid signature",
     });
   } catch (error) {
-    return res.status(401).send({
+    return res.status(500).send({
       msg: error?.message,
     });
   }

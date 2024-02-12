@@ -4,6 +4,35 @@ var jwt = require("jsonwebtoken");
 const config = require("../config/config");
 const { ObjectId } = mongoose.Schema;
 
+const userSales = new mongoose.Schema({
+  amount: {
+    type: Number,
+    default: 0,
+  },
+  ido: {
+    type: ObjectId,
+    ref: "Ido",
+  },
+  invested: {
+    type: Boolean,
+    default: false,
+  },
+  investmentDate: {
+    type: Number,
+  },
+  isWinner: {
+    type: Boolean,
+    default: false,
+  },
+  participationDate: {
+    type: Number,
+  },
+  ticketCount: {
+    type: Number,
+    default: 0,
+  },
+});
+
 const userSchema = new mongoose.Schema(
   {
     profileId: {
@@ -21,6 +50,7 @@ const userSchema = new mongoose.Schema(
       type: ObjectId,
       ref: "Account",
     },
+    sales: [userSales],
     role: {
       type: Number,
       default: 0,
@@ -34,12 +64,6 @@ userSchema.methods.getJwtToken = function () {
     expiresIn: config.jwt.expirationTime,
   });
 };
-
-// userSchema.methods.getJwtToken = () => {
-//   return jwt.sign({ id: "hello" }, "secret", {
-//     expiresIn: 24 * 60 * 60 * 1000
-//   } )
-// }
 
 const User = db.model("User", userSchema);
 

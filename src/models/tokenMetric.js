@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema;
+const db = require("../connections/dbMaster");
 
-export const TokenMetricSchema = new mongoose.Schema(
+const TokenMetricSchema = new mongoose.Schema(
 	{
 		allocation: {
 			type: String,
@@ -9,7 +10,7 @@ export const TokenMetricSchema = new mongoose.Schema(
 		allocationPercentage: {
 			type: Number,
 			default: 0,
-		},
+		}, 
         amount: {
 			type: Number,
 			default: 0,
@@ -43,4 +44,7 @@ export const TokenMetricSchema = new mongoose.Schema(
 
 const TokenMetric = db.model('TokenMetric', TokenMetricSchema)
 
-module.exports = TokenMetric;
+module.exports = {
+	TokenMetric,
+	TokenMetricSchema
+};

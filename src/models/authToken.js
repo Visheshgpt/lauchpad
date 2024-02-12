@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema;
+const db = require("../connections/dbMaster");
+
 
 const AuthTokenSchema = new mongoose.Schema(
   {

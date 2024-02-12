@@ -3,6 +3,7 @@ const User = require("../models/user");
 const Account = require("../models/account");
 const config = require("../config/config");
 const { fetchHoldings } = require("../helpers/fetchHoldings");
+const { handleError } = require("../helpers/responseHandler");
 
 const ethereumlogin = async (req, res) => {
   try {
@@ -55,10 +56,7 @@ const ethereumlogin = async (req, res) => {
       token,
     });
   } catch (error) {
-    console.log("error", error);
-    res.status(401).send({
-      msg: error,
-    });
+    handleError({ res, err_msg: "Error in login", error });
   }
 };
 
@@ -69,10 +67,7 @@ const getUser = async (req, res) => {
     user.account = account;
     return res.status(200).send(user);
   } catch (error) {
-    console.log("error", error);
-    res.status(401).send({
-      msg: error,
-    });
+    handleError({ res, error });
   }
 };
 
@@ -86,10 +81,7 @@ const holdings = async (req, res) => {
       .status(200)
       .send([account.holdingsHistory, account.holdingsTimeline]);
   } catch (error) {
-    console.log("error", error);
-    res.status(401).send({
-      msg: error,
-    });
+    handleError({ res, error });
   }
 };
 
@@ -106,10 +98,7 @@ const iskycVerified = async (req, res) => {
       iskycVerified: account.isKycVerified,
     });
   } catch (error) {
-    console.log("error", error);
-    res.status(401).send({
-      msg: error,
-    });
+    handleError({ res, error });
   }
 };
 
@@ -120,9 +109,7 @@ const price = async (req, res) => {
       price,
     });
   } catch (error) {
-    return res.status(500).send({
-      error: error,
-    });
+    handleError({ res, error });
   }
 };
 

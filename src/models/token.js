@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const { TokenMetricSchema } = require("./tokenMetric");
 const { ObjectId } = mongoose.Schema;
+const db = require("../connections/dbMaster");
 
 const TokenSchema = new mongoose.Schema(
   {
@@ -20,7 +21,7 @@ const TokenSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    hardcap: {
+    hardCap: {
       type: Number,
       default: 0,
     },
@@ -38,6 +39,7 @@ const TokenSchema = new mongoose.Schema(
     },
     network: {
       type: String,
+      default: "Ethereum"
     },
     utility: {
       type: Array,

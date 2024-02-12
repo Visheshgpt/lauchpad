@@ -1,11 +1,14 @@
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema;
+const db = require("../connections/dbMaster");
+
 
 const IdoSchema = new mongoose.Schema(
   {
     project: {
       type: ObjectId,
       ref: "Project",
+      required: true
     },
     completed: {
       type: Boolean,
@@ -36,7 +39,7 @@ const IdoSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    preSaleTokenPrice: {
+    presaleTokenPrice: {
       type: Number,
       default: 0,
     },
@@ -61,6 +64,11 @@ const IdoSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    users: {
+      type: [ObjectId],
+      ref: 'User'
+    } 
+
   },
   { timestamps: true }
 );
