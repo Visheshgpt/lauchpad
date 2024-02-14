@@ -13,7 +13,7 @@ module.exports.isLoggedIn = async (req, res, next) => {
       ).replace(" ", "");
 
     const decoded = jwt.verify(token, config.jwt.secret);
-    req.user = await User.findById(decoded.id);
+    req.user = await User.findById(decoded.id).populate('account').exec();
     next();
   } catch (error) {
     handleError({ res, err_msg: "Unauthorized", error });

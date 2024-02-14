@@ -6,7 +6,6 @@ const { tokenRoutes } = require("./token");
 const { projectRoutes } = require("./project");
 const { idoRoutes } = require("./ido");
 
-
 router.use("/user", userRoutes);
 router.use("/sale", saleRoutes);
 router.use("/token", tokenRoutes);

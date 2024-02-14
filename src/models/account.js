@@ -8,29 +8,25 @@ const AccountSchema = new mongoose.Schema(
       type: String,
       unique: true,
     },
-    holdingsHistory: {
-      type: Array,
-      default: [],
-    },
-    holdingsTimeline: {
-      type: Array,
-      default: [],
-    },
+    holdingsHistory: [
+      {
+        amount: Number,
+        timestamp: Date,
+      },
+    ],
     isKycVerified: {
       type: Boolean,
       default: false,
     },
     lastBalanceCheckedTime: {
-      type: Number,
-      default: 0,
+      type: Date,
     },
     lastActive: {
-      type: Number,
-      default: 0,
+      type: Date,
     },
     creationDate: {
-      type: Number,
-      default: parseInt(Date.now() / 1000),
+      type: Date,
+      default: new Date()
     },
     eligibleForGiftCard: {
       type: Boolean,

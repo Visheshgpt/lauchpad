@@ -43,18 +43,21 @@ module.exports = {
 
   web3Rpc: {
     ethereumRpc: "https://rpc.ankr.com/eth",
-    binanceRpc: "https://bsc-dataseed1.binance.org",
+    binanceRpc:
+      "https://long-quick-film.bsc-testnet.quiknode.pro/bc47cc3990104f27f5c8c57ef6a9cf2afb08fdff/",
+  },
+
+  blocksPerSeconds: {
+    bsc: 3,
+    eth: 12,
   },
 
   contracts: {
+    weth: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
     ether_usdt: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
     ether_usdc: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-    binance_usdt: "0x55d398326f99059fF775485246999027B3197955",
-    busd: "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
-  }
-   
-  // contracts: {
-  // 	BNBUSD_Price_Feed_Address: process.env.BNBUSD_Price_Feed,
-  // 	ETHUSD_Price_Feed_Address: process.env.ETHUSD_Price_Feed,
-  // },
+    wbnb: "0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd",
+    binance_usdt: "0x337610d27c682E347C9cD60BD4b3b107C9d34dDd",
+    busd: "0x8301F2213c0eeD49a7E28Ae4c3e91722919B8B47",
+  },
 };

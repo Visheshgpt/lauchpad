@@ -3,7 +3,8 @@ const User = require("../models/user");
 const Account = require("../models/account");
 const config = require("../config/config");
 const { fetchHoldings } = require("../helpers/fetchHoldings");
-const { handleError } = require("../helpers/responseHandler");
+const { handleError, handleResponse } = require("../helpers/responseHandler");
+const fetchHoldingHistory = require("../helpers/fetchHoldingHistory");
 
 const ethereumlogin = async (req, res) => {
   try {
@@ -14,8 +15,16 @@ const ethereumlogin = async (req, res) => {
     if (!account) {
       const account = new Account({
         address: address.toLowerCase(),
-        lastActive: parseInt(Date.now() / 1000),
+        lastActive: new Date(),
       });
+      const holdings = await fetchHoldings({ wallet: address });
+      account.holdingsHistory = [
+        {
+          amount: holdings,
+          timestamp: new Date(),
+        },
+      ];
+      account.lastBalanceCheckedTime = new Date();
       await account.save();
 
       const user = new User({ account: account._id });
@@ -63,23 +72,7 @@ const ethereumlogin = async (req, res) => {
 const getUser = async (req, res) => {
   try {
     const { user } = req;
-    const account = await Account.findById(user?.account);
-    user.account = account;
     return res.status(200).send(user);
-  } catch (error) {
-    handleError({ res, error });
-  }
-};
-
-const holdings = async (req, res) => {
-  try {
-    const { user } = req;
-    const account = await Account.findById(user?.account);
-    user.account = account;
-
-    return res
-      .status(200)
-      .send([account.holdingsHistory, account.holdingsTimeline]);
   } catch (error) {
     handleError({ res, error });
   }
@@ -92,10 +85,63 @@ const iskycVerified = async (req, res) => {
       address: walletAddress.toLowerCase(),
     });
 
-    await fetchHoldings(walletAddress);
-
     return res.status(200).send({
       iskycVerified: account.isKycVerified,
+    });
+  } catch (error) {
+    handleError({ res, error });
+  }
+};
+
+const holdings = async (req, res) => {
+  try {
+    const { account } = req.user;
+    const data = account.holdingsHistory;
+
+    handleResponse({ res, data });
+  } catch (error) {
+    handleError({ res, error });
+  }
+};
+
+const updateHoldings = async (req, res) => {
+  try {
+    const { address } = req.user.account;
+
+    const account = await Account.findOne({ address: address?.toLowerCase() });
+
+    if (!account) {
+      handleError({ res, statusCode: 404, error: "Account not found" });
+      return;
+    }
+
+    const oneHourAgo = new Date(Date.now() - 1 * 60 * 60 * 1000);
+    if (
+      !account.lastBalanceCheckedTime ||
+      account.lastBalanceCheckedTime < oneHourAgo
+    ) {
+      const holdingsData = await fetchHoldingHistory(address);
+
+      if (Array.isArray(holdingsData) && holdingsData.length > 0) {
+        const oldData = account.holdingsHistory || [];
+        const updatedHolding = [...oldData, ...holdingsData];
+
+        // Sorting holdingsData by timestamp if necessary
+        updatedHolding.sort((a, b) => a.timestamp - b.timestamp);
+
+        account.holdingsHistory = updatedHolding;
+        // Update lastBalanceCheckedTime
+        account.lastBalanceCheckedTime = new Date();
+        await account.save();
+      }
+      handleResponse({ res, data: account?.holdingsHistory || {} });
+      return;
+    }
+
+    handleResponse({
+      res,
+      msg: "Already up to date",
+      data: account?.holdingsHistory || {},
     });
   } catch (error) {
     handleError({ res, error });
@@ -117,6 +163,7 @@ module.exports = {
   ethereumlogin,
   getUser,
   holdings,
+  updateHoldings,
   iskycVerified,
   price,
 };
