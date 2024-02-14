@@ -1,10 +1,11 @@
 const logger = require("../helpers/logger");
-const User = require("../models/user");
+const { User, userSales } = require("../models/user");
 const Account = require("../models/account");
 const config = require("../config/config");
 const { fetchHoldings } = require("../helpers/fetchHoldings");
 const { handleError, handleResponse } = require("../helpers/responseHandler");
 const fetchHoldingHistory = require("../helpers/fetchHoldingHistory");
+const Ido = require("../models/ido");
 
 const ethereumlogin = async (req, res) => {
   try {
@@ -148,6 +149,90 @@ const updateHoldings = async (req, res) => {
   }
 };
 
+const registerIdo = async (req, res) => {
+  try {
+    const idoId = req.params.idoId;
+    const user = req.user;
+
+    const ido = await Ido.findById(idoId);
+
+    const currDate = new Date();
+    const startDate = new Date(ido.startDate * 1000);
+    const endDate = new Date(ido.endDate * 1000);
+
+    if (!(currDate > startDate && currDate < endDate)) {
+      handleError({ res, error: "Ido registration not live" });
+      return;
+    }
+
+    if (Array.isArray(ido.users) && ido.users.includes(user._id)) {
+      handleResponse({
+        res,
+        statusCode: 201,
+        msg: "Already registered",
+        data: {},
+      });
+      return;
+    }
+
+    const holdings = await fetchHoldings({ wallet: user?.account?.address });
+
+    ido.totalAssetsConnected = ido.totalAssetsConnected + parseInt(holdings);
+    ido.users.push(user);
+
+    const userSale = {
+      ido: ido._id,
+      participationDate: new Date(),
+    };
+    user.sales.push(userSale);
+    await Promise.all([user.save(), ido.save()]);
+
+    handleResponse({
+      res,
+      data: user,
+    });
+  } catch (error) {
+    handleError({ res, error });
+  }
+};
+
+const getallSales = async (req, res) => {
+  try {
+    const user = req.user;
+
+    const userId = user._id;
+    const userSalesWithIDODetails = await User.aggregate([
+      {
+        $match: { _id: userId },
+      },
+      {
+        $unwind: "$sales",
+      },
+      {
+        $lookup: {
+          from: "idos",
+          localField: "sales.ido",
+          foreignField: "_id",
+          as: "sales.idoDetails",
+        },
+      },
+      {
+        $group: {
+          _id: "$_id",
+          sales: { $push: "$sales" },
+        },
+      },
+    ]);
+
+    handleResponse({
+      res,
+      data: userSalesWithIDODetails || {},
+    });
+  } catch (error) {
+    handleError({ res, error });
+  }
+};
+
 const price = async (req, res) => {
   try {
     const { price } = req;
@@ -165,5 +250,6 @@ module.exports = {
   holdings,
   updateHoldings,
   iskycVerified,
-  price,
+  registerIdo,
+  getallSales,
 };

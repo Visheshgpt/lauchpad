@@ -35,8 +35,10 @@ const createSale = async (req, res) => {
         try {
           logger.info("aborting session");
           await session.abortTransaction();
+          session.endSession();
         } catch (abortError) {
           logger.debug(`Error in aborting transaction: ${abortError}`);
+          session.endSession();
         }
       }
       handleError({ res, err_msg: "Error in commiting transaction:", error });

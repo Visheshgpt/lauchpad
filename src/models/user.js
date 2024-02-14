@@ -18,14 +18,14 @@ const userSales = new mongoose.Schema({
     default: false,
   },
   investmentDate: {
-    type: Number,
+    type: Date,
   },
   isWinner: {
     type: Boolean,
     default: false,
   },
   participationDate: {
-    type: Number,
+    type: Date,
   },
   ticketCount: {
     type: Number,
@@ -67,4 +67,7 @@ userSchema.methods.getJwtToken = function () {
 
 const User = db.model("User", userSchema);
 
-module.exports = User;
+module.exports = {
+  User,
+  userSales
+} ;

@@ -1,6 +1,6 @@
 var jwt = require("jsonwebtoken");
 const config = require("../config/config");
-const User = require("../models/user");
+const {User} = require("../models/user");
 const { handleError } = require("../helpers/responseHandler");
 
 module.exports.isLoggedIn = async (req, res, next) => {
