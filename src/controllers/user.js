@@ -233,6 +233,15 @@ const getallSales = async (req, res) => {
   }
 };
 
+const getAllUsers = async (req, res) => {
+  try {
+    const data = await User.find().populate('account')
+    handleResponse({ res, data })
+  } catch (error) {
+    handleError({ res, error });
+  }
+}
+
 const price = async (req, res) => {
   try {
     const { price } = req;
@@ -252,4 +261,5 @@ module.exports = {
   iskycVerified,
   registerIdo,
   getallSales,
+  getAllUsers
 };

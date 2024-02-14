@@ -10,6 +10,7 @@ const db = mongoose.createConnection(config.db.str)
 // When successfully connected
 db.on('connected', () => {
 	logger.info('Mongoose connection open to master DB')
+	mongoose.set('debug', true);
 })
 
 // If the connection throws an error

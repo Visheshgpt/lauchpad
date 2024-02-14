@@ -8,7 +8,7 @@ const userSales = new mongoose.Schema({
   amount: {
     type: Number,
     default: 0,
-  },
+  }, 
   ido: {
     type: ObjectId,
     ref: "Ido",
@@ -47,7 +47,7 @@ const userSchema = new mongoose.Schema(
         "https://launch.apeterminal.io/static/media/Skull.faaf7226740c1a27e54c03535fefa0cf.svg",
     },
     account: {
-      type: ObjectId,
+      type: ObjectId, 
       ref: "Account",
     },
     sales: [userSales],

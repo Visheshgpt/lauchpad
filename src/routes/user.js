@@ -1,5 +1,5 @@
 const express = require("express");
-const { isLoggedIn, verifySignature, fetchPrice } = require("../middlewares");
+const { isLoggedIn, verifySignature, fetchPrice, isAdmin } = require("../middlewares");
 
 const {
   ethereumlogin,
@@ -8,7 +8,8 @@ const {
   holdings,
   updateHoldings,
   getallSales,
-  registerIdo
+  registerIdo,
+  getAllUsers
 } = require("../controllers/user");
 const userRoutes = express.Router();
 
@@ -20,6 +21,10 @@ userRoutes.get("/updateHoldings", isLoggedIn, updateHoldings);
 
 userRoutes.post('/register/:idoId', isLoggedIn, registerIdo)
 userRoutes.get('/allSales', isLoggedIn, getallSales)
+
+
+// userRoutes.get('/allusers', isLoggedIn, isAdmin, getAllUsers)
+userRoutes.get('/allusers', getAllUsers)
 
 
 module.exports = { userRoutes };
