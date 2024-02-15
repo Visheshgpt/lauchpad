@@ -17,7 +17,7 @@ userRoutes.post("/ethereumlogin", verifySignature, ethereumlogin);
 userRoutes.get("/", isLoggedIn, getUser);
 userRoutes.get("/isKycVerified/:walletAddress", iskycVerified);
 userRoutes.get("/holdings", isLoggedIn, holdings);
-userRoutes.get("/updateHoldings", isLoggedIn, updateHoldings);
+userRoutes.post("/updateHoldings", isLoggedIn, updateHoldings);
 
 userRoutes.post('/register/:idoId', isLoggedIn, registerIdo)
 userRoutes.get('/allSales', isLoggedIn, getallSales)

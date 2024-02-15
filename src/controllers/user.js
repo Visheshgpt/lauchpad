@@ -40,11 +40,9 @@ const ethereumlogin = async (req, res) => {
       });
 
       user.account = account;
-      return res.status(200).send({
-        msg: "success",
-        user,
-        token,
-      });
+
+      handleResponse({ res, data: { user, token } });
+      return;
     }
 
     account.lastActive = parseInt(Date.now() / 1000);
@@ -60,11 +58,7 @@ const ethereumlogin = async (req, res) => {
 
     user.account = account;
 
-    return res.status(200).send({
-      msg: "success",
-      user,
-      token,
-    });
+    handleResponse({ res, data: { user, token } });
   } catch (error) {
     handleError({ res, err_msg: "Error in login", error });
   }
@@ -73,7 +67,7 @@ const ethereumlogin = async (req, res) => {
 const getUser = async (req, res) => {
   try {
     const { user } = req;
-    return res.status(200).send(user);
+    handleResponse({ res, data: user });
   } catch (error) {
     handleError({ res, error });
   }
@@ -85,10 +79,7 @@ const iskycVerified = async (req, res) => {
     const account = await Account.findOne({
       address: walletAddress.toLowerCase(),
     });
-
-    return res.status(200).send({
-      iskycVerified: account.isKycVerified,
-    });
+    handleResponse({ res, data: { iskycVerified: account.isKycVerified } });
   } catch (error) {
     handleError({ res, error });
   }
@@ -127,11 +118,9 @@ const updateHoldings = async (req, res) => {
         const oldData = account.holdingsHistory || [];
         const updatedHolding = [...oldData, ...holdingsData];
 
-        // Sorting holdingsData by timestamp if necessary
         updatedHolding.sort((a, b) => a.timestamp - b.timestamp);
 
         account.holdingsHistory = updatedHolding;
-        // Update lastBalanceCheckedTime
         account.lastBalanceCheckedTime = new Date();
         await account.save();
       }
@@ -235,12 +224,12 @@ const getallSales = async (req, res) => {
 
 const getAllUsers = async (req, res) => {
   try {
-    const data = await User.find().populate('account')
-    handleResponse({ res, data })
+    const data = await User.find().populate("account");
+    handleResponse({ res, data });
   } catch (error) {
     handleError({ res, error });
   }
-}
+};
 
 const price = async (req, res) => {
   try {
@@ -261,5 +250,5 @@ module.exports = {
   iskycVerified,
   registerIdo,
   getallSales,
-  getAllUsers
+  getAllUsers,
 };

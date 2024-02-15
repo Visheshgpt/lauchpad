@@ -50,11 +50,10 @@ const createSale = async (req, res) => {
       }
     }
 
-    res.status(200).send({
+    handleResponse({
+      res,
       msg: "sale created successfully",
-      token,
-      project,
-      ido,
+      data: { token, project, ido },
     });
   } catch (error) {
     logger.debug(error.message);
@@ -108,11 +107,11 @@ const whiteListUsers = async (req, res) => {
     const { addresses } = req.body;
 
     const result = await User.updateMany(
-      { 'account.address': { $in: addresses }, 'sales.ido': idoId },
-      { $set: { 'sales.$[elem].isWinner': true } },
-      { arrayFilters: [{ 'elem.ido': idoId }] }
+      { "account.address": { $in: addresses }, "sales.ido": idoId },
+      { $set: { "sales.$[elem].isWinner": true } },
+      { arrayFilters: [{ "elem.ido": idoId }] }
     );
-    
+
     handleResponse({ res, data: result });
   } catch (error) {
     logger.debug(error.message);
