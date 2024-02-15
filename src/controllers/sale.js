@@ -106,33 +106,13 @@ const whiteListUsers = async (req, res) => {
   try {
     const idoId = req.params.idoId;
     const { addresses } = req.body;
-    console.log("addresses", addresses);
 
-    // const result = await User.updateMany(
-    //   { 'account.address': { $in: addresses }, 'sales.ido': idoId },
-    //   { $set: { 'sales.$[elem].isWinner': true } },
-    //   { arrayFilters: [{ 'elem.ido': idoId }] }
-    // );
-
-    const result = await User.find(
-      { 'account.address': '0x8ea45f6dd757a49f8647e0fb27886cd46babaa97' }, 
+    const result = await User.updateMany(
+      { 'account.address': { $in: addresses }, 'sales.ido': idoId },
+      { $set: { 'sales.$[elem].isWinner': true } },
+      { arrayFilters: [{ 'elem.ido': idoId }] }
     );
-      console.log("result", result);  
- 
-    // const result = await User.findOne(
-      // {
-        // 'account.address': '0x8ea45f6dd757a49f8647e0fb27886cd46babaa97',
-        // 'sales.ido': '65cc5cebbfa2332362f8f886'
-      // },
-      // {
-      //   $set: { 'sales.$[elem].isWinner': true },
-      //   $currentDate: { updatedAt: true }
-      // },
-      // {
-      //   arrayFilters: [{ 'elem.ido': '65cc5cebbfa2332362f8f886' }]
-      // } 
-    // );
-
+    
     handleResponse({ res, data: result });
   } catch (error) {
     logger.debug(error.message);
